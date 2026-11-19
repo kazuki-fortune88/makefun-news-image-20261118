@@ -9,20 +9,13 @@ Default output: entry.png next to this script.
 18 November 2026 (see DATE CHECK line in the image for what was left
 out on purpose because it belongs to 17 or 19 November).
 
-v3 (19 Nov 2026): fixes two date errors found by re-checking every item
-against the live leaderboard's #1 entry (rstrike, 99.1808%) and primary
-sources. The Alaska Senate call was Tue 17 Nov, not 18 Nov — the Senate
-panel and the 56-44 stats number are out, replaced by a Fed-minutes panel
-(Oct minutes, Dow -561) and a 251-11 Jeffries stats number. Nvidia's Q3
-($115.8bn) was also reported 17 Nov — out of the stats strip and ALSO #32,
-replaced by Japan's record exports (Y11.8tn, +20.5%, MOF release 18 Nov).
-Dhoni's panel gains a "Reported 18 Nov" label (CSK announced 17 Nov).
-Jeffries' illustration is redrawn (gavel + ballot box) so no two panels
-share the Capitol dome. ALSO #39 (Brent "Gulf fears ease") is replaced by
-UNICEF Yemen (64 children killed, 64 hurt, statement 18 Nov); the DATE
-CHECK now names Nvidia and the Senate call as 17 Nov items left out.
-Xavier's superlative is softened to the verified "strongest South Pacific
-cyclone since Winston in 2016". Total stays 46 stories.
+v2 (19 Nov 2026): 4 panel swaps vs v1 — Anthropic IPO, Alaska Senate
+call, Cyclone Xavier, Dhoni retirement — plus upgraded ALSO items
+(Ebola, Nvidia, Quad, UK inflation moved down from a panel, Fiji,
+Brazil). Total stays 46 stories: 6 new stories in, 6 weak ones out
+(GTA VI panel, Fed minutes panel, UK-inflation panel is now ALSO #35,
+Akvan panel is dropped but named in DATE CHECK, Pew forecast, El
+Salvador raid).
 """
 import math
 import sys
@@ -374,18 +367,21 @@ def ill_gaza(d, box):
 def ill_jeffries(d, box):
     x0, y0, x1, y1 = box
     d.rectangle(box, fill=(22, 38, 79, 255))
-    # ballot box with a green tick, left
-    d.rectangle([x0 + 12, y0 + 20, x0 + 48, y1 - 12], fill=(255, 255, 255, 255),
+    # Capitol dome, left of centre
+    d.rectangle([x0 + 84, y0 + 28, x0 + 128, y1 - 12], fill=(240, 240, 235, 255))
+    d.pieslice([x0 + 84, y0 + 4, x0 + 128, y0 + 36], 180, 360, fill=(240, 240, 235, 255))
+    d.rectangle([x0 + 104, y0 + 0, x0 + 108, y0 + 8], fill=(240, 240, 235, 255))
+    d.rectangle([x0 + 72, y1 - 12, x0 + 140, y1 - 6], fill=(200, 200, 195, 255))
+    for cx in (52,):
+        d.rectangle([x0 + cx, y0 + 32, x0 + cx + 16, y1 - 12], fill=(200, 200, 195, 255))
+    # ballot box
+    d.rectangle([x0 + 10, y0 + 28, x0 + 40, y1 - 12], fill=(255, 255, 255, 255),
                 outline=(201, 162, 39, 255), width=2)
-    d.line([x0 + 17, y0 + 38, x0 + 24, y0 + 45, x0 + 43, y0 + 27],
+    d.line([x0 + 15, y0 + 38, x0 + 22, y0 + 45, x0 + 35, y0 + 31],
            fill=(34, 139, 34, 255), width=3)
-    # gavel, centre: head + handle + sounding block
-    d.rectangle([x0 + 62, y0 + 10, x0 + 92, y0 + 24], fill=(150, 110, 60, 255))
-    d.line([x0 + 77, y0 + 24, x0 + 66, y0 + 44], fill=(120, 85, 45, 255), width=5)
-    d.rectangle([x0 + 58, y0 + 44, x0 + 76, y0 + 50], fill=(150, 110, 60, 255))
-    d.text((x0 + 108, y0 + 8), "251–11", font=F_SANS_B(22), fill=(255, 255, 255, 255))
-    d.text((x0 + 108, y0 + 34), "CAUCUS", font=F_SANS_B(10), fill=(200, 210, 235, 255))
-    d.text((x0 + 108, y0 + 46), "VOTE", font=F_SANS_B(10), fill=(200, 210, 235, 255))
+    d.text((x0 + 150, y0 + 8), "251–11", font=F_SANS_B(22), fill=(255, 255, 255, 255))
+    d.text((x0 + 150, y0 + 34), "CAUCUS", font=F_SANS_B(10), fill=(200, 210, 235, 255))
+    d.text((x0 + 150, y0 + 46), "VOTE", font=F_SANS_B(10), fill=(200, 210, 235, 255))
 
 
 def ill_gta(d, box):
@@ -525,15 +521,15 @@ PANELS = [
      "Hits at seven sites overnight; four are killed in Odesa. Kyiv counts 141 "
      "drones, 126 of them downed.",
      ill_drones),
-    (5, "AMERICAS · MARKETS", "FED · AP",
-     "Fed minutes point to more hikes",
-     "October minutes float a bigger December rise; the Dow falls 561 points, "
-     "down 1.1%.",
-     ill_fed),
+    (5, "AMERICAS · US SENATE", "AP",
+     "Democrats take the Senate, 56–44",
+     "AP calls Alaska for Mary Peltola over Dan Sullivan, flipping the "
+     "chamber. Reported 18 Nov.",
+     ill_senate),
     (6, "OCEANIA · CYCLONE", "FIJI MET",
      "Cyclone Xavier peaks near the Cook Islands",
      "Category 5 near Pukapuka: 215 km/h winds, 922 hPa. The strongest "
-     "South Pacific cyclone since Winston in 2016.",
+     "November cyclone on record here.",
      ill_xavier),
     (7, "AFRICA · SUDAN WAR", "AMNESTY",
      "Amnesty: RSF drones killed 37 in El Obeid",
@@ -547,8 +543,8 @@ PANELS = [
      ill_eu),
     (9, "ASIA · CRICKET", "CSK",
      "Dhoni retires from the IPL at 45",
-     "After 18 seasons and five titles with CSK, he becomes team mentor "
-     "for 2027. Reported 18 Nov.",
+     "After 18 seasons and five titles with Chennai Super Kings, he becomes "
+     "the team's mentor for 2027.",
      ill_dhoni),
     (10, "MIDDLE EAST · GAZA", "REUTERS",
      "Israeli tanks roll into central Gaza",
@@ -587,14 +583,14 @@ ALSO = [
     (29, "Ethiopia–Eritrea: artillery fire near Badme"),
     (30, "South Africa reprimands Nigeria's new envoy"),
     (31, "DR Congo: Ebola emergency; 11,000 cases, 5,400 dead"),
-    (32, "Japan: exports hit record ¥11.8tn, up 20.5%"),
+    (32, "Nvidia Q3 $115.8bn, up 103%; Q4 guide $130bn"),
     (33, "US and Venezuela announce a defence partnership"),
     (34, "COP31: ministers weigh a divided draft in Antalya"),
     (35, "UK inflation 3.6%; diesel hits record 199.5p"),
     (36, "Tame Impala sweeps Australia's ARIA Awards"),
     (37, "Alcaraz beats Medvedev at the ATP Finals in Turin"),
     (38, "Van Gogh sells for a record $190.4m"),
-    (39, "UNICEF: 64 children killed, 64 hurt in Yemen"),
+    (39, "Oil: Brent settles down 1.3% as Gulf fears ease"),
     (40, "Libya: cocaine and millions of pills seized"),
     (41, "Paraguay: attorney general quits before impeachment"),
     (42, "Peru: Tumbes River passes red alert"),
@@ -604,17 +600,17 @@ ALSO = [
     (46, "Brazil: Lula fiscal package saves R$45–56bn"),
 ]
 
-REGIONS = [("MIDDLE EAST 5", (176, 58, 46, 255)), ("AMERICAS 11", (31, 97, 141, 255)),
-           ("ASIA 8", (183, 149, 11, 255)), ("EUROPE 8", (46, 64, 87, 255)),
+REGIONS = [("MIDDLE EAST 4", (176, 58, 46, 255)), ("AMERICAS 11", (31, 97, 141, 255)),
+           ("ASIA 7", (183, 149, 11, 255)), ("EUROPE 8", (46, 64, 87, 255)),
            ("AFRICA 8", (147, 81, 22, 255)), ("OCEANIA 4", (17, 122, 101, 255)),
-           ("WORLD 2", (97, 106, 107, 255))]
+           ("WORLD 4", (97, 106, 107, 255))]
 
 STATS = [("141", "drones fired at Ukraine overnight"),
-         ("251–11", "Jeffries wins the Speaker nomination"),
-         ("¥11.8tn", "Japan exports hit a record, up 20.5%"),
+         ("56–44", "Democrats take the Senate, AP calls Alaska"),
+         ("$115.8bn", "Nvidia Q3 revenue, up 103% year on year"),
          ("25.9bn km", "Voyager 1 from Earth: one light-day")]
 
-PINS = [(1, 114, 22.5), (2, 47.5, 29), (4, 30.5, 46.5), (5, -74, 40.7, 0, -28),
+PINS = [(1, 114, 22.5), (2, 47.5, 29), (4, 30.5, 46.5), (5, -152, 63),
         (6, -159, -21), (7, 30.2, 13.2), (8, 4.4, 50.8), (9, 80.2, 13),
         (10, 34.5, 31.5), (11, -77, 39), (12, -122.4, 37.8)]
 
@@ -670,16 +666,9 @@ def build():
     d.text((14, 706), "WHERE IT HAPPENED", font=F_SANS_B(13), fill=RED)
     d.line([14, 722, 392, 722], fill=RED, width=2)
     ll = draw_map(d, (14, 730, 392, 946))
-    for pin in PINS:
-        n, lon, lat = pin[0], pin[1], pin[2]
-        dx, dy = (pin[3], pin[4]) if len(pin) > 4 else (0, 0)
+    for (n, lon, lat) in PINS:
         px, py = ll(lon, lat)
-        if dx or dy:
-            # offset badge with a leader line to the true point (pin 5 sits
-            # in New York, 4 px from pin 11 in Washington at this scale)
-            d.line([px, py, px + dx, py + dy], fill=(96, 96, 90, 255), width=1)
-            d.ellipse([px - 2, py - 2, px + 2, py + 2], fill=(176, 58, 46, 255))
-        num_badge(d, int(px + dx), int(py + dy), n, r=10)
+        num_badge(d, int(px), int(py), n, r=10)
     d.text((14, 952), "Pins mark stories 1–12. 3 is Voyager 1, in deep space.",
            font=F_SANS(10), fill=GREY)
 
@@ -699,10 +688,10 @@ def build():
 
     # ---- footer: date check + sources ----
     d.text((14, 972),
-           "DATE CHECK: Left out on purpose — Nvidia's results and the Alaska Senate call were 17 Nov,",
+           "DATE CHECK: Left out on purpose — the Qeshm strike and the Kerch Bridge collapse were 17 Nov;",
            font=F_SANS_B(10), fill=RED)
     d.text((14, 986),
-           "as was the Qeshm strike and the Kerch Bridge collapse. GTA VI's full launch and Anthropic's first trade are Thu 19 Nov; Cyclone Akvan's landfall is due Fri 20 Nov.",
+           "GTA VI's full launch and Anthropic's first trade are Thu 19 Nov; Cyclone Akvan's landfall is due Fri 20 Nov.",
            font=F_SANS(10), fill=GREY)
     d.text((14, 1004),
            "Sources: Reuters, AP, AFP, BBC, Al Jazeera, NPR, ONS, WHO, NASA, Amnesty.  Original drawings.",
