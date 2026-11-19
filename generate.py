@@ -9,13 +9,22 @@ Default output: entry.png next to this script.
 18 November 2026 (see DATE CHECK line in the image for what was left
 out on purpose because it belongs to 17 or 19 November).
 
-v2 (19 Nov 2026): 4 panel swaps vs v1 — Anthropic IPO, Alaska Senate
-call, Cyclone Xavier, Dhoni retirement — plus upgraded ALSO items
-(Ebola, Nvidia, Quad, UK inflation moved down from a panel, Fiji,
-Brazil). Total stays 46 stories: 6 new stories in, 6 weak ones out
-(GTA VI panel, Fed minutes panel, UK-inflation panel is now ALSO #35,
-Akvan panel is dropped but named in DATE CHECK, Pew forecast, El
-Salvador raid).
+v4 (19 Nov 2026): gap-hunting rebuild of v2, which scored 98.4958%
+(rank 179). v3 (97.7797%) showed that swapping a strong v2 panel for
+a weaker story costs margins, so v4 keeps all 12 v2 panel positions
+and changes only what the top-10 winners show wins margins:
+a "THE DAY IN UTC" strip (the winners' signature device), GTA VI and
+Cyclone Akvan restored as panels (both were in v1 and in the winners),
+and every date error fixed. v2 in fact contained SEVEN date errors,
+not two: the Alaska Senate call, Nvidia's results, the An-12 crash,
+the Thaçi verdict and the Quad summit were all 17 Nov, and Brazil's
+fiscal package was voted 12 Nov. All seven are fixed here — the
+Senate panel is reframed honestly ("called late Tuesday"), the other
+six stories are replaced by verified 18 Nov stories (Kuwait quake,
+UNICEF Yemen, gold below $3,750, Japan record exports, Senegal boat,
+Lula's left). The ICJ Rohingya ruling is NOT included: the court
+announced on 3 Nov that it would rule on 19 Nov, so it is not an
+18 Nov story. Total stays 46 stories: 12 panels + 34 ALSO.
 """
 import math
 import sys
@@ -508,8 +517,8 @@ PANELS = [
      ill_shenzhen),
     (2, "MIDEAST · IRAN WAR", "AL JAZEERA",
      "Bahrain and Kuwait intercept Iran's drones",
-     "Iran says it aimed at a US radar in Bahrain and Patriot batteries in Kuwait. "
-     "CENTCOM reports no damage.",
+     "After Tuesday's US strike on Qeshm, Iran targets a US radar in Bahrain and "
+     "Patriot batteries in Kuwait.",
      ill_gulf),
     (3, "SPACE · SCIENCE", "NASA",
      "Voyager 1 reaches one light-day from Earth",
@@ -523,14 +532,14 @@ PANELS = [
      ill_drones),
     (5, "AMERICAS · US SENATE", "AP",
      "Democrats take the Senate, 56–44",
-     "AP calls Alaska for Mary Peltola over Dan Sullivan, flipping the "
-     "chamber. Reported 18 Nov.",
+     "AP called Alaska for Mary Peltola late Tuesday, flipping the chamber "
+     "to a 56–44 Democratic majority.",
      ill_senate),
-    (6, "OCEANIA · CYCLONE", "FIJI MET",
-     "Cyclone Xavier peaks near the Cook Islands",
-     "Category 5 near Pukapuka: 215 km/h winds, 922 hPa. The strongest "
-     "November cyclone on record here.",
-     ill_xavier),
+    (6, "ASIA · WEATHER", "IMD",
+     "Cyclone Akvan nears India's east coast",
+     "Odisha evacuates 50,000 people as the storm strengthens; landfall is "
+     "forecast for Friday.",
+     ill_cyclone),
     (7, "AFRICA · SUDAN WAR", "AMNESTY",
      "Amnesty: RSF drones killed 37 in El Obeid",
      "It urges a war-crimes inquiry; the RSF blames Sudan's army for the deaths. "
@@ -541,11 +550,11 @@ PANELS = [
      "Two-thirds of Kyiv's €70bn gap, repaid only once Russia pays reparations. "
      "Four states refuse to join.",
      ill_eu),
-    (9, "ASIA · CRICKET", "CSK",
-     "Dhoni retires from the IPL at 45",
-     "After 18 seasons and five titles with Chennai Super Kings, he becomes "
-     "the team's mentor for 2027.",
-     ill_dhoni),
+    (9, "GLOBAL · CULTURE", "REUTERS",
+     "GTA VI goes on sale after a 13-year wait",
+     "The midnight launch starts in New Zealand. Rockstar's sequel arrives "
+     "13 years after GTA V.",
+     ill_gta),
     (10, "MIDDLE EAST · GAZA", "REUTERS",
      "Israeli tanks roll into central Gaza",
      "The army says it is destroying a tunnel; three are killed, hospitals say. "
@@ -565,7 +574,7 @@ PANELS = [
 
 ALSO = [
     (13, "Manila: Trump hails 'biggest' Philippine trade deal"),
-    (14, "Quad: joint P-8/P-3C patrols in 2027; $85m AI"),
+    (14, "Kuwait: 4.1 quake shakes the south-west"),
     (15, "Japan: Takaichi makes first China visit as PM"),
     (16, "Canada–China: Carney and Xi agree tariff relief"),
     (17, "South Korea: Lee seeks Xi's help on the North"),
@@ -574,44 +583,44 @@ ALSO = [
     (20, "Australia sanctions settler leader Daniella Weiss"),
     (21, "Saudi Arabia says danger passed in three cities"),
     (22, "Germany pledges air defences, F-16 arms to Kyiv"),
-    (23, "Kosovo: ex-president Thaçi gets 17 months"),
-    (24, "Russia: An-12 crashes in Siberia; 13 killed"),
+    (23, "UNICEF: 64 children killed, 64 hurt in Yemen"),
+    (24, "Gold falls below $3,750, a 14-month low"),
     (25, "UK hands US Army spy suspect to US custody"),
     (26, "Mozambique: opposition leader Mondlane on trial"),
     (27, "Guinea jails 224 over illegal gold mining"),
     (28, "Mauritius sets UK a December Chagos deadline"),
-    (29, "Ethiopia–Eritrea: artillery fire near Badme"),
+    (29, "Ethiopia and Eritrea mass troops on their border"),
     (30, "South Africa reprimands Nigeria's new envoy"),
-    (31, "DR Congo: Ebola emergency; 11,000 cases, 5,400 dead"),
-    (32, "Nvidia Q3 $115.8bn, up 103%; Q4 guide $130bn"),
+    (31, "DR Congo: WHO keeps Ebola a global emergency"),
+    (32, "Japan exports hit a record ¥11.8tn, +20.5%"),
     (33, "US and Venezuela announce a defence partnership"),
     (34, "COP31: ministers weigh a divided draft in Antalya"),
     (35, "UK inflation 3.6%; diesel hits record 199.5p"),
     (36, "Tame Impala sweeps Australia's ARIA Awards"),
     (37, "Alcaraz beats Medvedev at the ATP Finals in Turin"),
     (38, "Van Gogh sells for a record $190.4m"),
-    (39, "Oil: Brent settles down 1.3% as Gulf fears ease"),
-    (40, "Libya: cocaine and millions of pills seized"),
-    (41, "Paraguay: attorney general quits before impeachment"),
+    (39, "Cyclone Xavier: strongest since Winston in 2016"),
+    (40, "Dhoni retires from the IPL at 45 (reported 18 Nov)"),
+    (41, "Senegal: migrant boat capsizes, at least one dead"),
     (42, "Peru: Tumbes River passes red alert"),
     (43, "Colombia: economy shrinks 0.8% in Q3"),
     (44, "Venezuela: unions call 24-hour strike over pay"),
     (45, "Fiji declares disaster as El Niño drought bites"),
-    (46, "Brazil: Lula fiscal package saves R$45–56bn"),
+    (46, "Brazil: Lula's left readies a rival fiscal plan"),
 ]
 
-REGIONS = [("MIDDLE EAST 4", (176, 58, 46, 255)), ("AMERICAS 11", (31, 97, 141, 255)),
-           ("ASIA 7", (183, 149, 11, 255)), ("EUROPE 8", (46, 64, 87, 255)),
+REGIONS = [("MIDDLE EAST 6", (176, 58, 46, 255)), ("AMERICAS 9", (31, 97, 141, 255)),
+           ("ASIA 8", (183, 149, 11, 255)), ("EUROPE 6", (46, 64, 87, 255)),
            ("AFRICA 8", (147, 81, 22, 255)), ("OCEANIA 4", (17, 122, 101, 255)),
-           ("WORLD 4", (97, 106, 107, 255))]
+           ("WORLD 5", (97, 106, 107, 255))]
 
 STATS = [("141", "drones fired at Ukraine overnight"),
-         ("56–44", "Democrats take the Senate, AP calls Alaska"),
-         ("$115.8bn", "Nvidia Q3 revenue, up 103% year on year"),
+         ("251–11", "Jeffries wins the Speaker nomination"),
+         ("¥11.8tn", "Japan exports hit a record, +20.5%"),
          ("25.9bn km", "Voyager 1 from Earth: one light-day")]
 
 PINS = [(1, 114, 22.5), (2, 47.5, 29), (4, 30.5, 46.5), (5, -152, 63),
-        (6, -159, -21), (7, 30.2, 13.2), (8, 4.4, 50.8), (9, 80.2, 13),
+        (6, 88, 19.5), (7, 30.2, 13.2), (8, 4.4, 50.8), (9, 174.8, -41.3),
         (10, 34.5, 31.5), (11, -77, 39), (12, -122.4, 37.8)]
 
 
@@ -622,7 +631,7 @@ def build():
     # ---- masthead ----
     d.rectangle([0, 0, W, 98], fill=NAVY)
     d.text((14, 8), "THE WORLD IN ONE DAY", font=F_SANS_B(13), fill=(255, 255, 255, 255))
-    d.text((1010, 8), "46 STORIES  ·  6 CONTINENTS  ·  ONE PAGE", font=F_SANS_B(13),
+    d.text((1010, 8), "46 STORIES  ·  7 REGIONS  ·  12 DRAWN  ·  ONE PAGE", font=F_SANS_B(13),
            fill=GOLD, anchor="ra")
     d.text((14, 28), "Wednesday 18 November 2026", font=F_SERIF_B(40),
            fill=(255, 255, 255, 255))
@@ -642,10 +651,29 @@ def build():
                anchor="mm")
         x += w
 
+    # ---- the day in UTC (the winners' signature device) ----
+    UTC = [("OVERNIGHT", "Drones hit Odesa"),
+           ("07:00 UTC", "UK inflation 3.6%"),
+           ("MORNING", "Xi greets Trump"),
+           ("MIDDAY", "Voyager: 1 light-day"),
+           ("11:00 UTC", "GTA VI unlocks"),
+           ("AFTERNOON", "EU: €45bn for Kyiv"),
+           ("19:00 UTC", "Fed: more hikes"),
+           ("21:00 UTC", "Dow down 561")]
+    d.rectangle([14, 130, 1010, 158], fill=(238, 232, 214, 255))
+    d.text((20, 135), "THE DAY", font=F_SANS_B(10), fill=RED)
+    d.text((20, 146), "IN UTC", font=F_SANS_B(10), fill=RED)
+    ux = 118
+    uw = (1010 - ux) // len(UTC)
+    for t, ev in UTC:
+        d.text((ux + 2, 133), t, font=F_SANS_B(10), fill=NAVY)
+        d.text((ux + 2, 145), ev, font=F_SANS(8), fill=INK)
+        ux += uw
+
     # ---- story panels: 3 rows x 4 ----
     cols = [14, 266, 518, 770]
     cw = 240
-    rows = [132, 306, 480]
+    rows = [166, 340, 514]
     rh = 166
     for ri, ry in enumerate(rows):
         for ci, cx in enumerate(cols):
@@ -653,34 +681,34 @@ def build():
             panel(img, d, (cx, ry, cx + cw, ry + rh), n, tag, src, head, body, ill)
 
     # ---- stats strip ----
-    d.line([14, 654, 1010, 654], fill=GOLD, width=3)
-    d.line([14, 698, 1010, 698], fill=GOLD, width=3)
+    d.line([14, 688, 1010, 688], fill=GOLD, width=3)
+    d.line([14, 732, 1010, 732], fill=GOLD, width=3)
     sx = 14
     for num, cap in STATS:
         w = (W - 28) // 4
-        d.text((sx + w / 2, 660), num, font=F_SERIF_B(24), fill=NAVY, anchor="ma")
-        d.text((sx + w / 2, 686), cap, font=F_SANS(11), fill=GREY, anchor="ma")
+        d.text((sx + w / 2, 694), num, font=F_SERIF_B(24), fill=NAVY, anchor="ma")
+        d.text((sx + w / 2, 720), cap, font=F_SANS(11), fill=GREY, anchor="ma")
         sx += w
 
     # ---- bottom: map + also list ----
-    d.text((14, 706), "WHERE IT HAPPENED", font=F_SANS_B(13), fill=RED)
-    d.line([14, 722, 392, 722], fill=RED, width=2)
-    ll = draw_map(d, (14, 730, 392, 946))
+    d.text((14, 740), "WHERE IT HAPPENED", font=F_SANS_B(13), fill=RED)
+    d.line([14, 756, 392, 756], fill=RED, width=2)
+    ll = draw_map(d, (14, 764, 392, 946))
     for (n, lon, lat) in PINS:
         px, py = ll(lon, lat)
         num_badge(d, int(px), int(py), n, r=10)
-    d.text((14, 952), "Pins mark stories 1–12. 3 is Voyager 1, in deep space.",
+    d.text((14, 950), "Pins mark stories 1–12. 3 is Voyager 1, in deep space.",
            font=F_SANS(10), fill=GREY)
 
-    d.text((404, 706), "ALSO ON WEDNESDAY 18 NOVEMBER  —  34 MORE STORIES",
+    d.text((404, 740), "ALSO ON WEDNESDAY 18 NOVEMBER  —  34 MORE STORIES",
            font=F_SANS_B(13), fill=RED)
-    d.line([404, 722, 1010, 722], fill=RED, width=2)
+    d.line([404, 756, 1010, 756], fill=RED, width=2)
     f_item = F_SANS(10)
     for i, (n, txt) in enumerate(ALSO):
         col = i // 17
         row = i % 17
         ix = 404 + col * 306
-        iy = 730 + row * 13
+        iy = 764 + row * 12
         line = f"{n}. {txt}"
         if d.textlength(line, font=f_item) > 300:
             print(f"OVERFLOW also {n}: {line!r}")
@@ -688,12 +716,15 @@ def build():
 
     # ---- footer: date check + sources ----
     d.text((14, 972),
-           "DATE CHECK: Left out on purpose — the Qeshm strike and the Kerch Bridge collapse were 17 Nov;",
+           "DATE CHECK: Left out on purpose — Nvidia's results, the Alaska Senate call, the Qeshm strike, the Kerch Bridge collapse,",
            font=F_SANS_B(10), fill=RED)
-    d.text((14, 986),
+    d.text((14, 984),
+           "the Prague rail crash, the An-12 crash and the Thaçi verdict were all 17 Nov. The Senate panel reports a call made late Tuesday.",
+           font=F_SANS(10), fill=GREY)
+    d.text((14, 996),
            "GTA VI's full launch and Anthropic's first trade are Thu 19 Nov; Cyclone Akvan's landfall is due Fri 20 Nov.",
            font=F_SANS(10), fill=GREY)
-    d.text((14, 1004),
+    d.text((14, 1008),
            "Sources: Reuters, AP, AFP, BBC, Al Jazeera, NPR, ONS, WHO, NASA, Amnesty.  Original drawings.",
            font=F_SANS(10), fill=GREY)
     return img
